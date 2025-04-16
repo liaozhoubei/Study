@@ -26,6 +26,15 @@ jobs:
         run: |
           echo "Current directory: $(pwd)"
           ls -R doc/  # 调试目录结构
+       # 2. 调试：打印完整目录结构
+      - name: Debug directory
+        run: |
+          echo "## 当前目录 ##"
+          pwd
+          echo "\n## 全部文件 ##"
+          ls -R
+          echo "\n## doc/ 内容 ##"
+          ls -l doc/ || echo "⚠️ doc/ 不存在"
 
       - name: 打印测试
         run: echo "这只是一条打印信息，没有其他用途"        
