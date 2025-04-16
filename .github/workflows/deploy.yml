@@ -53,7 +53,7 @@ jobs:
         run: cat doc/delete_user.html   
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: './doc' # 指定上传 artifact 的路径为 doc 目录
 
