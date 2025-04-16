@@ -20,14 +20,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Replace Firebase Configuration in HTML
+      - name: Replace Firebase Configuration in HTML in doc directory
         run: |
-          sed -i "s|FIREBASE_API_KEY|${{ secrets.FIREBASE_API_KEY }}|g" delete_user.html
-          sed -i "s|FIREBASE_AUTH_DOMAIN|${{ secrets.FIREBASE_AUTH_DOMAIN }}|g" delete_user.html
-          sed -i "s|FIREBASE_PROJECT_ID|${{ secrets.FIREBASE_PROJECT_ID }}|g" delete_user.html
-          sed -i "s|FIREBASE_STORAGE_BUCKET|${{ secrets.FIREBASE_STORAGE_BUCKET }}|g" delete_user.html
-          sed -i "s|FIREBASE_MESSAGING_SENDER_ID|${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}|g" delete_user.html
-          sed -i "s|FIREBASE_APP_ID|${{ secrets.FIREBASE_APP_ID }}|g" delete_user.html
+          sed -i "s|FIREBASE_API_KEY|${{ secrets.FIREBASE_API_KEY }}|g" doc/your_html_file.html
+          sed -i "s|FIREBASE_AUTH_DOMAIN|${{ secrets.FIREBASE_AUTH_DOMAIN }}|g" doc/your_html_file.html
+          sed -i "s|FIREBASE_PROJECT_ID|${{ secrets.FIREBASE_PROJECT_ID }}|g" doc/your_html_file.html
+          sed -i "s|FIREBASE_STORAGE_BUCKET|${{ secrets.FIREBASE_STORAGE_BUCKET }}|g" doc/your_html_file.html
+          sed -i "s|FIREBASE_MESSAGING_SENDER_ID|${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}|g" doc/your_html_file.html
+          sed -i "s|FIREBASE_APP_ID|${{ secrets.FIREBASE_APP_ID }}|g" doc/your_html_file.html
         env:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
@@ -39,7 +39,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './doc' # 假设你的 HTML 文件在仓库根目录下，如果不在请修改路径
+          path: './doc' # 指定上传 artifact 的路径为 doc 目录
 
   deploy:
     needs: build
