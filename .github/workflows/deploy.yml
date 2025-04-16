@@ -22,6 +22,11 @@ jobs:
         with:
           ref: dev # 指定检出 dev 分支
 
+      - name: Verify file
+        run: |
+          echo "Current directory: $(pwd)"
+          ls -R doc/  # 调试目录结构
+
       - name: 打印测试
         run: echo "这只是一条打印信息，没有其他用途"        
 
