@@ -37,6 +37,9 @@ jobs:
           FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
 
+      - name: Output Modified HTML Content
+        run: cat doc/delete_user.html   
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
