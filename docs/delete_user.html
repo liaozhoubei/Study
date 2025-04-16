@@ -60,6 +60,9 @@
 
         <div id="delete-account-container">
             <h2>账户管理</h2>
+            <p></br></p>
+            <button id="logout-account-btn">退出谷歌账户</button>
+            <p></br></p>
             <button id="delete-account-btn">删除谷歌账户</button>
         </div>
 
@@ -76,8 +79,7 @@
         var myappId ="FIREBASE_APP_ID"
         var testKey ="MY_TEST_KEY"
         console.log("Hello world:"); // 从 config.js 获取
-        // console.log("testKey Key:", testKey); // 从 config.js 获取
-        //alert(testKey)
+
         const firebaseConfig = {
             apiKey: myapiKey,
             authDomain: myauthDomain,
@@ -93,6 +95,7 @@
         const loginContainer = document.getElementById('login-container');
         const deleteAccountContainer = document.getElementById('delete-account-container');
         const googleLoginBtn = document.getElementById('google-login-btn');
+        const logoutAccountBtn = document.getElementById('logout-account-btn');
         const deleteAccountBtn = document.getElementById('delete-account-btn');
 
         // 监听用户认证状态的变化
@@ -121,6 +124,18 @@
                     console.error('谷歌登陆失败', error);
                     messageDiv.textContent = `谷歌登陆失败: ${error.message}`;
                 });
+        });
+
+        // 退出账户功能
+        logoutAccountBtn.addEventListener('click', () => {
+             auth.signOut().then(() => {
+                console.log('用户已成功登出');
+                messageDiv.textContent = '已成功登出。';
+                // UI 会根据 auth.onAuthStateChanged 自动更新
+            }).catch((error) => {
+                console.error('登出失败:', error);
+                messageDiv.textContent = `登出失败: ${error.message}`;
+            });
         });
 
         // 删除账户功能
