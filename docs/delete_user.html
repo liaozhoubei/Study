@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Firebase 谷歌登陆与删除账户</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4; /* 可选的背景色 */
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center; /* 使容器内的文本居中 */
+        }
+
+        #login-container,
+        #delete-account-container,
+        #message {
+            margin-bottom: 20px; /* 调整元素之间的间距 */
+        }
+
+        #delete-account-container {
+            display: none; /* 初始时隐藏删除账户容器 */
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Firebase 谷歌登陆与删除账户</h1>
+
+        <div id="login-container">
+            <h2>登录</h2>
+            <button id="google-login-btn">使用 Google 登陆</button>
+        </div>
+
+        <div id="delete-account-container">
+            <h2>账户管理</h2>
+            <button id="delete-account-btn">删除谷歌账户</button>
+        </div>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // 你的 Firebase 配置
+        // 你的 Firebase 配置
+        var myapiKey = "FIREBASE_API_KEY"
+        var myauthDomain ="FIREBASE_AUTH_DOMAIN"
+        var myprojectId ="FIREBASE_PROJECT_ID"
+        var mystorageBucket = "FIREBASE_STORAGE_BUCKET"
+        var mymessagingSenderId = "FIREBASE_MESSAGING_SENDER_ID"
+        var myappId ="FIREBASE_APP_ID"
+        const firebaseConfig = {
+            apiKey: myapiKey,
+            authDomain: myauthDomain,
+            projectId: myprojectId,
+            storageBucket: mystorageBucket,
+            messagingSenderId: mymessagingSenderId,
+            appId: myappId
+        };
+        // 初始化 Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const messageDiv = document.getElementById('message');
+        const loginContainer = document.getElementById('login-container');
+        const deleteAccountContainer = document.getElementById('delete-account-container');
+        const googleLoginBtn = document.getElementById('google-login-btn');
+        const deleteAccountBtn = document.getElementById('delete-account-btn');
+
+        // 监听用户认证状态的变化
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // 用户已登录，显示删除账户按钮，隐藏登录按钮
+                loginContainer.style.display = 'none';
+                deleteAccountContainer.style.display = 'block';
+                messageDiv.textContent = `已登录用户: ${user.displayName || user.email}`;
+            } else {
+                // 用户未登录，显示登录按钮，隐藏删除账户按钮
+                loginContainer.style.display = 'block';
+                deleteAccountContainer.style.display = 'none';
+                messageDiv.textContent = '未登录';
+            }
+        });
+
+        // 谷歌登陆功能
+        googleLoginBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // 登陆成功，`auth.onAuthStateChanged` 会处理 UI 更新
+                    console.log('谷歌登陆成功', result);
+                }).catch((error) => {
+                    console.error('谷歌登陆失败', error);
+                    messageDiv.textContent = `谷歌登陆失败: ${error.message}`;
+                });
+        });
+
+        // 删除账户功能
+        deleteAccountBtn.addEventListener('click', () => {
+            const confirmation = confirm('删除账号将清除您的所有相关信息，请谨慎考虑是否要删除账号!');
+            if (confirmation) {
+                const user = auth.currentUser;
+                if (user) {
+                    messageDiv.textContent = '正在尝试删除账户...';
+                    user.delete().then(() => {
+                        messageDiv.textContent = '账户已成功删除。';
+                        // `auth.onAuthStateChanged` 会处理 UI 更新为未登录状态
+                        console.log('账户已删除');
+                    }).catch((error) => {
+                        console.error('删除账户失败:', error);
+                        messageDiv.textContent = `删除账户失败: ${error.message}`;
+                        if (error.code === 'auth/requires-recent-login') {
+                            messageDiv.textContent += ' 请重新登录后重试。';
+                            // 你可以添加一个重新登录的按钮或者执行重新登录的逻辑
+                        }
+                    });
+                } else {
+                    messageDiv.textContent = '当前没有用户登录。';
+                }
+            } else {
+                messageDiv.textContent = '已取消删除账户操作。';
+            }
+        });
+    </script>
+</body>
+</html>
