@@ -20,6 +20,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: 打印测试
+        run: echo "这只是一条打印信息，没有其他用途"        
+
       - name: Print Firebase Keys
         run: |
           echo "FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}"
