@@ -67,7 +67,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs' # 指定上传 artifact 的路径为 doc 目录
+          path: 'docs' # 指定上传 artifact 的路径为 doc 目录
 
   deploy:
     needs: build
