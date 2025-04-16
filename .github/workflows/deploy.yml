@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: dev # 指定检出 dev 分支
 
       - name: 打印测试
         run: echo "这只是一条打印信息，没有其他用途"        
