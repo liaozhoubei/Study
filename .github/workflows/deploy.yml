@@ -39,7 +39,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: '.' # 假设你的 HTML 文件在仓库根目录下，如果不在请修改路径
+          path: './doc' # 假设你的 HTML 文件在仓库根目录下，如果不在请修改路径
 
   deploy:
     needs: build
