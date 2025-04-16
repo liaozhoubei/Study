@@ -25,7 +25,7 @@ jobs:
       - name: Verify file
         run: |
           echo "Current directory: $(pwd)"
-          ls -R doc/  # 调试目录结构
+
        # 2. 调试：打印完整目录结构
       - name: Debug directory
         run: |
