@@ -22,10 +22,6 @@ jobs:
         with:
           ref: dev # 指定检出 dev 分支
 
-      - name: Verify file
-        run: |
-          echo "Current directory: $(pwd)"
-
        # 2. 调试：打印完整目录结构
       - name: Debug directory
         run: |
